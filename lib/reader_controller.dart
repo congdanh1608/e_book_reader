@@ -284,8 +284,9 @@ initialize();""");
             document.getElementById('content').style.height = Math.ceil(document.getElementById('content').scrollHeight / window.innerHeight) * window.innerHeight + 'px';
             var scrollHeight = document.getElementById('content').scrollHeight;
 
-            ScrollPosition.postMessage([scrollPosition,window.innerHeight,scrollHeight]);
-            ScrollPositionX.postMessage([window.scrollX,window.innerWidth,document.getElementById('content').scrollWidth]);
+            ScrollPosition.postMessage(JSON.stringify([scrollPosition,window.innerHeight,scrollHeight]));
+            ScrollPositionX.postMessage(JSON.stringify([window.scrollX,window.innerWidth,document.getElementById
+            ('content').scrollWidth]));
           }
 
           window.addEventListener('scroll', updatePageInfo);

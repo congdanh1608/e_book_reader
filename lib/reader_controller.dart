@@ -242,14 +242,18 @@ initialize();""");
     return scrollToPosition(y);
   }
 
+//Fixed incorrect scroll position
   Future<void> scrollToPosition(double position) {
     if (Axis.horizontal == config.axis) {
-      return _webViewController.scrollTo(
-        position.toInt(),
-        0,
-      );
+      // return _webViewController.scrollTo(
+      //   position.toInt(),
+      //   0,
+      // );
+
+      return _webViewController.runJavaScript("window.scrollTo(${position.toInt()}, 0);");
     }
-    return _webViewController.scrollTo(0, position.toInt());
+    // return _webViewController.scrollTo(0, position.toInt());
+    return _webViewController.runJavaScript("window.scrollTo(0, ${position.toInt()});");
   }
 
   Future<void> scrollToPage(int page) {
@@ -263,6 +267,7 @@ initialize();""");
   }
 
   String? _text;
+//Fixed incorrect scroll position
   Future<void> load(String text) async {
     _text = text;
     String html = """

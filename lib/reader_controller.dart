@@ -239,7 +239,8 @@ initialize();""");
 
   Future<void> scrollToRate(double rate) {
     var y = rate * (_scrollHeight - contentHeight);
-    return scrollToPosition(y);
+    return _webViewController
+        .runJavaScript("window.scrollTo(0, ${y.toInt()});");
   }
 
 //Fixed incorrect scroll position
@@ -279,19 +280,19 @@ initialize();""");
       <body>
         <div id="content" style="min-height: 100%;" >
         $_text
+        <div id='space'></div>
         </div>
 
          <script>
-        document.getElementById('content').style.height =  window.innerHeight + 'px'
+          document.getElementById('space').style.height = (Math.ceil(document.getElementById('content').scrollHeight / window.innerHeight) * window.innerHeight) - (document.getElementById('content').scrollHeight) + 'px';
+          
+          
           function updatePageInfo(){
-         
             var scrollPosition = window.scrollY;
-            document.getElementById('content').style.height = Math.ceil(document.getElementById('content').scrollHeight / window.innerHeight) * window.innerHeight + 'px';
             var scrollHeight = document.getElementById('content').scrollHeight;
-
+          
             ScrollPosition.postMessage(JSON.stringify([scrollPosition,window.innerHeight,scrollHeight]));
-            ScrollPositionX.postMessage(JSON.stringify([window.scrollX,window.innerWidth,document.getElementById
-            ('content').scrollWidth]));
+            ScrollPositionX.postMessage(JSON.stringify([window.scrollX,window.innerWidth,document.getElementById('content').scrollWidth]));
           }
 
           window.addEventListener('scroll', updatePageInfo);

@@ -243,14 +243,18 @@ initialize();""");
         .runJavaScript("window.scrollTo(0, ${y.toInt()});");
   }
 
+//Fixed incorrect scroll position
   Future<void> scrollToPosition(double position) {
     if (Axis.horizontal == config.axis) {
-      return _webViewController.scrollTo(
-        position.toInt(),
-        0,
-      );
+      // return _webViewController.scrollTo(
+      //   position.toInt(),
+      //   0,
+      // );
+
+      return _webViewController.runJavaScript("window.scrollTo(${position.toInt()}, 0);");
     }
-    return _webViewController.scrollTo(0, position.toInt());
+    // return _webViewController.scrollTo(0, position.toInt());
+    return _webViewController.runJavaScript("window.scrollTo(0, ${position.toInt()});");
   }
 
   Future<void> scrollToPage(int page) {
@@ -264,6 +268,7 @@ initialize();""");
   }
 
   String? _text;
+//Fixed incorrect scroll position
   Future<void> load(String text) async {
     _text = text;
     String html = """
@@ -285,7 +290,7 @@ initialize();""");
           function updatePageInfo(){
             var scrollPosition = window.scrollY;
             var scrollHeight = document.getElementById('content').scrollHeight;
-           
+          
             ScrollPosition.postMessage(JSON.stringify([scrollPosition,window.innerHeight,scrollHeight]));
             ScrollPositionX.postMessage(JSON.stringify([window.scrollX,window.innerWidth,document.getElementById('content').scrollWidth]));
           }
